@@ -8,10 +8,12 @@
 //= require moment
 //= require bootstrap-datetimepicker
 //= require records
-//= require masonry-4.0.0
+//= require masonry.pkgd.min
+//= require imagesloaded.pkgd.min
 //= require angular
 //= require ng-file-upload
 //= require ng-file-upload-shim
 //= require angular-ui-switch
 //= require angular-modal-service
+//= require angular-masonry
 //= require voices_app
