@@ -1,5 +1,5 @@
 // compile all required controllers into one app to expose to views
-var VoicesApp = angular.module('VoicesApp', ['ngFileUpload', 'uiSwitch', 'angularModalService']);
+var VoicesApp = angular.module('VoicesApp', ['ngFileUpload', 'uiSwitch', 'angularModalService', 'wu.masonry']);
 
 
 // service to return the current page class (record, annotatate, edit)
@@ -982,6 +982,22 @@ VoicesApp.controller("GalleryController", [
 
 
 
+VoicesApp.directive('scrollTrigger', function($window) {
+    return {
+        link : function(scope, element, attrs) {
+            var offset = parseInt(attrs.threshold) || 0;
+            var e = $(element[0]);
+            var doc = $(document);
+            angular.element(document).bind('scroll', function() {
+                if (doc.scrollTop() + $window.innerHeight + offset > e.offset().top) {
+                    scope.$apply(attrs.scrollTrigger);
+                }
+            });
+        }
+    };
+});
+
+
 
 
 VoicesApp.controller("userController", [
@@ -1020,10 +1036,14 @@ VoicesApp.controller("userController", [
 
     // define and call function to serve all user records
     var getAllRecords = function() {
+      // reset the page so we start displaying at the start of the array
+      $scope.page = 0;
+
       $http.get("/user/show.json", 
         {"params": 
           {"viewAll": $scope.viewAll,
-           "sortMethod": $scope.sortMethod
+           "sortMethod": $scope.sortMethod,
+           "page": $scope.page
          }, cache: true } 
       ).then(function(response) {
         $scope.records = response.data;
@@ -1040,11 +1060,13 @@ VoicesApp.controller("userController", [
         // value back to 0
         if (searchTerm) {
             $scope.userRanSearch = 1;
+            $scope.page = 0;
             $http.get("/user/show.json",
               {"params": 
                 {"keywords": searchTerm,
                  "viewAll": $scope.viewAll,
-                 "sortMethod": $scope.sortMethod
+                 "sortMethod": $scope.sortMethod,
+                 "page": $scope.page
                }, cache: true }  
             ).then(function(response) {
               $scope.records = response.data;
@@ -1079,7 +1101,7 @@ VoicesApp.controller("userController", [
 
     // create a boolean that controls whether we're
     // showing all submissions or only the user's submissions
-    // initialize to 1
+    // initialize to 1 (i.e. show everyone's submissions initially)
     $scope.viewAll = 1;
 
 
@@ -1107,11 +1129,52 @@ VoicesApp.controller("userController", [
         $scope.sortMethod = $scope.requestedSortMethod;
         $scope.search($scope.keywords);
       }
-
     };
+
 
     // initialize the page with sort by date
     $scope.sortMethod = $scope.sortOptions[0].val;
+
+
+    /***
+    * Paginagion
+    ***/
+
+    $scope.page = 0;
+
+    // submit a query for the new page of records
+    // and append the result to $scope.records
+    $scope.paginatedSearch = function() {
+      $http.get("/user/show.json",
+          {"params": 
+            {"keywords": $scope.keyword,
+             "viewAll": $scope.viewAll,
+             "sortMethod": $scope.sortMethod,
+             "page": $scope.page
+           }, cache: true }  
+        ).then(function(response) {
+          var pageOfRecords = response.data;
+          for(var i = 1; i <= pageOfRecords.length; i++) {
+            $scope.records.push(pageOfRecords[i]);
+          }
+
+        }, function(response) {
+          console.log(response.status);
+        }
+      );
+    };
+
+
+    // search function that appends to $scope.records,
+    // rather than simply redefine $scope.records
+    $scope.loadMore = function() {
+      $scope.page += 1;
+      // don't query beyond the maximum number of pages 
+      // subtract 1 from total pages for zero based indexing
+      if ($scope.page <= $scope.records[0].total_pages - 1) {
+        $scope.paginatedSearch();
+      };
+    };
 
 
     /***
