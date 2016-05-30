@@ -35,6 +35,15 @@ class UserController < ApplicationController
     # sort the records according to the user's request
     @records_to_display = @records_to_display.order(params[:sortMethod])
 
+    # paginate the records to display
+    @page_of_records_to_display = []
+    @records_per_page = 10
+    @total_pages = (@records_to_display.length / @records_per_page.to_f).ceil
+    @current_page = params[:page].to_i || 0
+    @start_record = @current_page * @records_per_page
+    @end_record = ((@current_page + 1) * @records_per_page) -1
+    @page_of_records_to_display = @records_to_display[@start_record .. @end_record]
+
 
     """expose json of the following form:
 
@@ -83,9 +92,9 @@ class UserController < ApplicationController
 
     @user_records_with_attachments = []
 
-    @records_to_display.each do |r|
+    @page_of_records_to_display.each do |r|
       @record_attachments = r.record_attachments
-      @record_with_attachments = {record: r, attachments: @record_attachments}
+      @record_with_attachments = {record: r, attachments: @record_attachments, total_pages: @total_pages}
       @user_records_with_attachments << @record_with_attachments
     end
 
