@@ -59,6 +59,14 @@
 
       <!-- Otherwise, show all records -->
       <div ng-if="records.length != 0">
+
+        <div masonry="">
+          <img class="masonry-brick" ng-repeat="record in records track by $index" ng-src="http://placehold.it/225x{{200}}" />
+          </div>
+          <div scroll-trigger="loadMore()" threshold="100"></div>
+        </body>
+
+        <!--
         <div class="masonry-container">
           <div class="masonry">
             <div ng-repeat="record in records" class="records-container">
@@ -76,8 +84,10 @@
             </div>
           </div>
         </div>
-      </div>
+        -->
 
+
+      </div>
     </div>
   </div>
 
