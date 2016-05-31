@@ -982,20 +982,22 @@ VoicesApp.controller("GalleryController", [
 
 
 
-VoicesApp.directive('scrollTrigger', function($window) {
-    return {
-        link : function(scope, element, attrs) {
-            var offset = parseInt(attrs.threshold) || 0;
-            var e = $(element[0]);
-            var doc = $(document);
-            angular.element(document).bind('scroll', function() {
-                if (doc.scrollTop() + $window.innerHeight + offset > e.offset().top) {
-                    scope.$apply(attrs.scrollTrigger);
-                }
-            });
+VoicesApp.directive('scrollRecords', function($window) {
+  return {
+    link : function(scope, element, attrs) {
+      var offset = parseInt(attrs.threshold) || 0;
+      var e = $(element[0]);
+      var doc = $(document);
+      angular.element(document).bind('scroll', function() {
+        if (doc.scrollTop() + $window.innerHeight + offset > e.offset().top) {
+          scope.$apply(attrs.scrollRecords);
         }
-    };
+      });
+    }
+  };
 });
+
+
 
 
 
@@ -1020,6 +1022,7 @@ VoicesApp.controller("userController", [
 
     // function to determine which image url to serve to the client
     $scope.getImageUrl = function(attachment) {
+      console.log(attachment);
       var placeholderPath = $scope.hasPlaceholderImage(attachment);
       if (placeholderPath) {
         return placeholderPath;
@@ -1154,9 +1157,11 @@ VoicesApp.controller("userController", [
            }, cache: true }  
         ).then(function(response) {
           var pageOfRecords = response.data;
-          for(var i = 1; i <= pageOfRecords.length; i++) {
-            $scope.records.push(pageOfRecords[i]);
-          }
+          for(var i = 0; i <= pageOfRecords.length; i++) {
+            if (pageOfRecords[i]) {
+              $scope.records.push(pageOfRecords[i]);
+            };
+          };
 
         }, function(response) {
           console.log(response.status);
@@ -1171,8 +1176,10 @@ VoicesApp.controller("userController", [
       $scope.page += 1;
       // don't query beyond the maximum number of pages 
       // subtract 1 from total pages for zero based indexing
-      if ($scope.page <= $scope.records[0].total_pages - 1) {
-        $scope.paginatedSearch();
+      if ($scope.records[0]) {
+        if ($scope.page <= $scope.records[0].total_pages - 1) {
+          $scope.paginatedSearch();
+        };
       };
     };
 
