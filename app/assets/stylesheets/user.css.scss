@@ -167,4 +167,14 @@ li#sortOrderSelect select {
   }
 }
 
+/******************
+* Infinite scroll *
+******************/
 
+.not-loaded {
+  display: none;
+}
+
+.loaded {
+  display: block;
+}
