@@ -37,7 +37,7 @@ class UserController < ApplicationController
 
     # paginate the records to display
     @page_of_records_to_display = []
-    @records_per_page = 10
+    @records_per_page = 25
     @total_pages = (@records_to_display.length / @records_per_page.to_f).ceil
     @current_page = params[:page].to_i || 0
     @start_record = @current_page * @records_per_page
