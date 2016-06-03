@@ -1022,7 +1022,6 @@ VoicesApp.controller("userController", [
 
     // function to determine which image url to serve to the client
     $scope.getImageUrl = function(attachment) {
-      console.log(attachment);
       var placeholderPath = $scope.hasPlaceholderImage(attachment);
       if (placeholderPath) {
         return placeholderPath;
@@ -1176,7 +1175,7 @@ VoicesApp.controller("userController", [
       $scope.page += 1;
       // don't query beyond the maximum number of pages 
       // subtract 1 from total pages for zero based indexing
-      if ($scope.records[0]) {
+      if (typeof $scope.records !== 'undefined') {
         if ($scope.page <= $scope.records[0].total_pages - 1) {
           $scope.paginatedSearch();
         };
