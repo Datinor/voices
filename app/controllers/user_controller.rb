@@ -13,7 +13,6 @@ class UserController < ApplicationController
       @user_records = Record.includes(:record_attachments).where("make_private = ? OR cas_user_name = ?", false, session[:cas_user])
     end
 
-
     if params[:keywords].present?
       @keywords = params[:keywords]
 
@@ -31,7 +30,6 @@ class UserController < ApplicationController
       @records_to_display = @user_records 
     end
 
-
     # sort the records according to the user's request
     @records_to_display = @records_to_display.order(params[:sortMethod])
 
@@ -43,7 +41,6 @@ class UserController < ApplicationController
     @start_record = @current_page * @records_per_page
     @end_record = ((@current_page + 1) * @records_per_page) -1
     @page_of_records_to_display = @records_to_display[@start_record .. @end_record]
-
 
     """expose json of the following form:
 
