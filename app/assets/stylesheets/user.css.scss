@@ -178,3 +178,77 @@ li#sortOrderSelect select {
 .loaded {
   display: block;
 }
+
+.masonry-brick {
+  margin: 0 5px 5px 0;
+}
+
+/* Set breakpoints for recentering masonry items on wrap */
+/* Margin-left = ( n_cols * 225 + (n_cols - 1 * 5) ) / 2 */
+
+/* block sizes for mobile devices */
+@media (max-width: 494px) {
+  .masonry-block-container {
+    width: 100%;
+  }
+
+  .masonry-brick {
+    width: 100%;
+    margin: 0 0 5px 0;
+  }
+
+  .masonry-brick img {
+    width: 100%;
+    margin: 0 0 5px 0;
+  }
+
+  .masonry-brick-annotation {
+    width: 100%;
+  }
+
+}
+
+/* block sizes for all non-mobile devices */
+@media (min-width: 495px) {
+  .masonry-brick {
+    width: 225px;
+  }
+
+  .masonry-brick img {
+    width: 225px;
+  }
+
+  .masonry-brick-annotation {
+    width: 225px;
+  }
+
+}
+
+/* single column masonry */
+@media (min-width: 495px) and (max-width: 724px) {
+  .masonry-block-container {
+    position: relative;
+    margin-left: -227.5px;
+    padding-left: 50%;
+  }
+}
+
+
+
+/* three column masonry */
+@media (min-width: 725px) and (max-width: 991px) {
+  .masonry-block-container {
+    position: relative;
+    margin-left: -342.5px;
+    padding-left: 50%;
+  }
+}
+
+/* four column masonry */
+@media (min-width: 992px) {
+  .masonry-block-container {
+    position: relative;
+    margin-left: -459.5px;
+    padding-left: 50%;
+  }
+}
