@@ -101,7 +101,6 @@ VoicesApp.service('postRecordForm', [
 
 
 
-
 // service to POST attachment annotations to db
 VoicesApp.service('saveAnnotationService', [
   function () {
@@ -115,10 +114,6 @@ VoicesApp.service('saveAnnotationService', [
     }
   }
 ]);
-
-
-
-
 
 
 
@@ -144,6 +139,7 @@ VoicesApp.controller("FormController", [
       return false;
     };
 
+
     // setter for form elements; only to be called when user is editing record
     // TODO: Make into a service that returns response.data.record
     $scope.getAttachments = function(recordId) {
@@ -160,6 +156,7 @@ VoicesApp.controller("FormController", [
         )
       } 
     };
+
 
     // if we are in an edit page, then set the form scope by running 
     // a get request for the current record
@@ -186,7 +183,6 @@ VoicesApp.controller("FormController", [
     //postRecordForm.uploadForm($scope.form);
     // this requires that $scope.form be defined, and that all elements
     // be tied to the form element
-
 
 
     // function for adding or removing image record attachment attributes to/from the form
@@ -349,9 +345,7 @@ VoicesApp.controller("FormController", [
           };
         }; // closes loop over filesizes
       }; // closes abort()
-
     }; // closes sendFileToAWS();
-
 
 
     // function called by button click and drag and drop behavior to
@@ -413,7 +407,6 @@ VoicesApp.controller("FormController", [
             "Status text: " + resp.statusText
           );
         }
-        
           
       }, function (evt) {
           // Tie a progress value to this size of this file.
@@ -426,7 +419,6 @@ VoicesApp.controller("FormController", [
             Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
           };
       }); // closes serverside file upload callback
-
 
       // expose function that allows user to cancel the upload of a file
       $scope.abort = function(fileInTransit) {        
@@ -449,7 +441,6 @@ VoicesApp.controller("FormController", [
           $scope.filesSent.splice(sentIndex, 1);
         };
       }; // closes abort()
-
     }; // closes sendFileToServer()
 
 
@@ -467,7 +458,7 @@ VoicesApp.controller("FormController", [
       }
     };
     
-    
+
     // function to ensure that an uploaded file
     // is below the max file size
     $scope.fileTooLarge = function(file) {
@@ -489,6 +480,7 @@ VoicesApp.controller("FormController", [
       {"width": 300, "height": 200, "centerCrop": true, "filesize": "annotation_thumb"},
       {"width": 200, "height": 200, "centerCrop": true, "filesize": "square_thumb"} 
     ];
+
 
     // function called by both dragged files and browsed files for uploading files
     var uploadAllFiles = function(files) {
@@ -593,6 +585,7 @@ VoicesApp.controller("FormController", [
       }
     });
 
+
     // function to call when user selects files with the Browse button
     $scope.$watch('browsedFiles', function () {
       if ($scope.browsedFiles) {
@@ -635,6 +628,7 @@ VoicesApp.controller('ModalController', [
       close(result, 500); 
     }; 
 
+
     // function that allows users to save annotation to db
     $scope.saveAnnotation = function(annotation, attachmentId) {
       // call the saveAnnotation service
@@ -650,7 +644,7 @@ VoicesApp.controller('ModalController', [
         return false; 
       };
     };
-    
+
 
     // function to determine which image url to serve to the client
     $scope.getImageUrl = function(attachment) {
@@ -1031,7 +1025,6 @@ VoicesApp.controller("userController", [
     }; // closes function
 
 
-
     /***
     * Search functionality 
     ***/
@@ -1053,6 +1046,7 @@ VoicesApp.controller("userController", [
         console.log(response.status);
       }
     )};
+
 
     // define function that places get request with user-specified query
     // when user interacts with the search input field
