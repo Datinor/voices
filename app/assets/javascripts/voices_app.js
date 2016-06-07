@@ -997,8 +997,8 @@ VoicesApp.directive('scrollRecords', function($window) {
 
 
 VoicesApp.controller("userController", [
-        "$scope", "$http", "$timeout",
-    function($scope, $http, $timeout) {
+        "$scope", "$http", "$timeout", "$rootScope",
+    function($scope, $http, $timeout, $rootScope) {
       
     /***
     * Helper functions to provide client with path to asset image
@@ -1066,7 +1066,6 @@ VoicesApp.controller("userController", [
                }, cache: true }  
             ).then(function(response) {
               $scope.records = response.data;
-
             }, function(response) {
               console.log(response.status);
             }
@@ -1074,7 +1073,10 @@ VoicesApp.controller("userController", [
       } else {
         getAllRecords();
       };
-    } // closes $scope.search()
+
+      // manually issue a masonry reload request to adjust assets
+      setTimeout(function(){ $rootScope.$broadcast('masonry.reload'); }, 1000);
+    } 
 
     // initialize a variable that keeps track of whether a user has run a search
     $scope.userRanSearch = 0;
