@@ -5,9 +5,7 @@
       <form>
         <div class="input-group input-group-lg search-box-container">
           <label for="search.keywords" class="sr-only">Keywords</label>
-            
           <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-        
           <input 
             id="search-box"
             type="text"
@@ -16,7 +14,6 @@
             placeholder="Search"
             ng-change="search(keywords)"
             ng-model="keywords">
-
         </div>
       </form>
     </div>
@@ -57,36 +54,23 @@
         <%= render 'search_returned_no_results' %>
       </div>
 
-      <!-- Otherwise, show all records -->
-      <div ng-if="records.length != 0">
+      <div class="masonry-block-container">
+        <div ng-if="records.length != 0">
+          <div masonry="" reload-on-resize>
+            <div data-ng-repeat="record in records track by $index" 
+                 class="masonry-brick not-loaded" 
+                 data-ng-cloak>
+              <a data-ng-href="/records/{{record.record.id}}">
+                <img data-ng-src="{{ getImageUrl(record.attachments[0]) }}" 
+                     alt="{{ record.record.title }}" 
+                     data-ng-class="{ 'placeholder-image' : record.attachments[0].placeholder_image_path !== null}"/>
 
-        <div masonry="">
-          <img class="masonry-brick" ng-repeat="record in records track by $index" ng-src="http://placehold.it/225x{{200}}" />
-          </div>
-          <div scroll-trigger="loadMore()" threshold="100"></div>
-        </body>
-
-        <!--
-        <div class="masonry-container">
-          <div class="masonry">
-            <div ng-repeat="record in records" class="records-container">
-              <div class="masonry-item">
-                <div class="section">
-                  <a ng-href="/records/{{record.record.id}}">
-                    <img data-ng-src="{{ getImageUrl(record.attachments[0]) }}" 
-                         data-ng-class="{ 'placeholder-image' : record.attachments[0].placeholder_image_path !== null}"
-                         alt="{{ record.record.title }}">
-
-                    <div class="masonry-item-title">{{record.record.title}}</div>
-                  </a>
-                </div>
-              </div>
+                <div class="masonry-brick-annotation" data-ng-cloak>{{record.record.title}}</div>
+              </a>
             </div>
           </div>
+          <div scroll-records="loadMore()" threshold="100"></div>
         </div>
-        -->
-
-
       </div>
     </div>
   </div>
